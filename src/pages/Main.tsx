@@ -42,7 +42,7 @@ const Main = ({navigation}: MainInScreenProps) => {
         <Icon
           name="log-out-outline"
           size={40}
-          color="#f4a555"
+          color="#3f3d56"
           onPress={() =>
             Alert.alert(
               '알림',

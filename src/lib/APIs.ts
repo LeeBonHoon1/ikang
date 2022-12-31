@@ -23,11 +23,17 @@ const checkEmail = (body: object) => {
   return post({url, body});
 };
 
+const getSearchUser = (body: object) => {
+  const url = `${host}/users/userSearch`;
+  return post({url, body});
+};
+
 const APIs = {
   getNoticeList,
   signupRequest,
   signIn,
   checkEmail,
+  getSearchUser,
 };
 
 export default APIs;
