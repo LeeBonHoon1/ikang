@@ -72,8 +72,7 @@ function SignIn({navigation}: SignInScreenProps) {
     //     setLoading(false);
     //   });
 
-    //server 닫겨 있을 때
-
+    //server 닫겨 있을 때\
     dispatch(
       userSlice.actions.setUser({
         email: 'test@gmail.com',

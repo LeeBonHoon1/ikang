@@ -26,16 +26,20 @@ type SignInScreenProps = NativeStackScreenProps<RootStackParamList, 'Notice'>;
 // const DESC_MAX_LENGTH = 100;
 
 const Notice = ({navigation}: SignInScreenProps) => {
-  // const [notice, setNotice] = useState([]);
+  const [notice, setNotice] = useState([]);
+  const [ios, setIos] = useState(false);
   const isTeacher = useSelector(
     (state: RootState) => state.user.sortation === 1,
   );
 
-  // useEffect(() => {
-  //   APIs.getNoticeList().then(res => {
-  //     setNotice(res);
-  //   });
-  // }, [notice]);
+  useEffect(() => {
+    // APIs.getNoticeList().then(res => {
+    //   setNotice(res);
+    // });
+    if (Platform.OS === 'ios') {
+      setIos(true);
+    }
+  }, [notice]);
   const goBack = () => {
     navigation.navigate('Main');
   };
@@ -70,10 +74,8 @@ const Notice = ({navigation}: SignInScreenProps) => {
     {NOTICE_IDX: 9, TITLE: 'TITLE', CONTENT: '키드밀리 릴러말즈 전상근 아이유'},
   ];
 
-  const isIos = Platform.OS === 'ios';
-
   return (
-    <View style={isIos ? styles.iosContainer : styles.container}>
+    <View style={ios ? styles.iosContainer : styles.container}>
       <StatusBar hidden={false} />
       <ScrollView>
         <ImageBackground
@@ -128,7 +130,7 @@ const styles = StyleSheet.create({
   container: {
     display: 'flex',
     backgroundColor: 'white',
-    paddingTop: 20,
+    paddingTop: 10,
     position: 'relative',
   },
   iosContainer: {
@@ -138,6 +140,11 @@ const styles = StyleSheet.create({
     position: 'relative',
   },
   arrow: {
+    position: 'absolute',
+    top: 10,
+    left: 5,
+  },
+  iosArrow: {
     position: 'absolute',
     top: 10,
   },

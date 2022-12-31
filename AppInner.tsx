@@ -15,7 +15,7 @@ import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import {useSelector} from 'react-redux';
 import {RootState} from './src/store/reducer';
 
-export type RootStackParamList = {
+export type RootStackParamList<T = Array<string | number>> = {
   SignIn: undefined;
   SignUp: Partial<{
     user: string;
@@ -43,10 +43,10 @@ export type RootStackParamList = {
   Search: undefined;
   SignUpSelect: undefined;
   AddNotice: undefined;
-  NoticeDetail: Partial<{
+  NoticeDetail: {
     idx: number;
-    data: object;
-  }>;
+    data: T[];
+  };
 };
 
 // const Tab = createBottomTabNavigator();
@@ -54,7 +54,6 @@ const Stack = createNativeStackNavigator<RootStackParamList>();
 
 function AppInner() {
   const isLoggedIn = useSelector((state: RootState) => !!state.user.email);
-  console.log(isLoggedIn);
   return isLoggedIn ? (
     <Stack.Navigator>
       <Stack.Screen
