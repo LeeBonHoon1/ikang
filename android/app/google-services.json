@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "141940252758",
+    "project_id": "ikang-d4be6",
+    "storage_bucket": "ikang-d4be6.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:141940252758:android:6704ed69440d0428719bf7",
+        "android_client_info": {
+          "package_name": "com.eg"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "141940252758-qaf73cs1hgq57rbvi2pmlmulldmd0n5m.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.eg",
+            "certificate_hash": "5e8f16062ea3cd2c4a0d547876baa6f38cabf625"
+          }
+        },
+        {
+          "client_id": "141940252758-5apmcijse46np9dtam7ss73fn7sb72cu.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBzfHfKepAbkbZ9Uxu_-ws8GxjY9cAZoYQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "141940252758-5apmcijse46np9dtam7ss73fn7sb72cu.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

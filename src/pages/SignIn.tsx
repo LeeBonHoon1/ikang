@@ -16,7 +16,7 @@ import DismissKeyboardView from '../components/DissmissKeyboardView';
 import {RootStackParamList} from '../../AppInner';
 import {useAppDispatch} from '../store';
 import userSlice from '../slices/user';
-import APIs from '../lib/APIs';
+// import APIs from '../lib/APIs';
 
 type SignInScreenProps = NativeStackScreenProps<RootStackParamList, 'SignIn'>;
 
@@ -45,10 +45,10 @@ function SignIn({navigation}: SignInScreenProps) {
       return Alert.alert('알림', '비밀번호를 입력해주세요.');
     }
 
-    const params = {
-      email: email,
-      password: password,
-    };
+    // const params = {
+    //   email: email,
+    //   password: password,
+    // };
     setLoading(true);
 
     // APIs.signIn(params)
