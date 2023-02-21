@@ -1,10 +1,10 @@
 import {get, post} from './index';
 
-const host = 'https://egback.loca.lt';
+const host =
+  'http://ec2-18-182-33-159.ap-northeast-1.compute.amazonaws.com:3000';
 
 const getNoticeList = () => {
   const url = `${host}/notice/getNoticeList`;
-
   return get({url});
 };
 

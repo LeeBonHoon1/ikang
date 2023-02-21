@@ -11,16 +11,15 @@ import {
   Platform,
 } from 'react-native';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
-// import EncryptedStorage from 'react-native-encrypted-storage';
+import EncryptedStorage from 'react-native-encrypted-storage';
 import DismissKeyboardView from '../components/DissmissKeyboardView';
 import {RootStackParamList} from '../../AppInner';
 import {useAppDispatch} from '../store';
 import userSlice from '../slices/user';
-// import APIs from '../lib/APIs';
+import APIs from '../lib/APIs';
 
-type SignInScreenProps = NativeStackScreenProps<RootStackParamList, 'SignIn'>;
-
-function SignIn({navigation}: SignInScreenProps) {
+type MainInScreenProps = NativeStackScreenProps<RootStackParamList, 'SignIn'>;
+function SignIn({navigation}: MainInScreenProps) {
   const dispatch = useAppDispatch();
   const [loading, setLoading] = useState(false);
   const [email, setEmail] = useState('');
@@ -45,50 +44,40 @@ function SignIn({navigation}: SignInScreenProps) {
       return Alert.alert('알림', '비밀번호를 입력해주세요.');
     }
 
-    // const params = {
-    //   email: email,
-    //   password: password,
-    // };
+    const params = {
+      email: email,
+      password: password,
+    };
     setLoading(true);
 
-    // APIs.signIn(params)
-    //   .then(res => {
-    //     Alert.alert('알림', '로그인 되었습니다.');
-    //     setLoading(false);
-    //     dispatch(
-    //       userSlice.actions.setUser({
-    //         email: res[0].EMAIL,
-    //         name: res[0].NAME,
-    //         number: res[0].NUMBER,
-    //         password: res[0].PASSWORD,
-    //         sortation: res[0].SORTATION,
-    //         userIdx: res[0].USER_IDX,
-    //       }),
-    //     );
-    //   })
-    //   .catch(err => {
-    //     console.log(err);
-    //     Alert.alert('알림', '잠시후에 다시 시도해주세요');
-    //     setLoading(false);
-    //   });
-
-    //server 닫겨 있을 때\
-    dispatch(
-      userSlice.actions.setUser({
-        email: 'test@gmail.com',
-        sortation: 1, // 강사
-        // sortation: 2, // 학생
-      }),
-    );
-
-    // 토큰 발급 시 스토리지 사용
-    // await EncryptedStorage.setItem(
-    //   'refreshToken',
-    //   response.data.data.refreshToken,
+    try {
+      setLoading(true);
+      const res = await APIs.signIn(params);
+      Alert.alert('알림', '로그인 되었습니다.');
+      dispatch(
+        userSlice.actions.setUser({
+          email: res.userInfo.EMAIL,
+          name: res.userInfo.NAME,
+          number: res.userInfo.NUMBER,
+          password: res.userInfo.PASSWORD,
+          userIdx: res.userInfo.USER_IDX,
+          sortation: res.userInfo.SORTATION,
+          token: res.token,
+          isLoggedIn: true,
+        }),
+      );
+      await EncryptedStorage.setItem('accessToken', res.token);
+    } catch (err) {
+      console.log(err);
+      Alert.alert('알림', '잠시후에 다시 시도해주세요');
+      setLoading(false);
+    } finally {
+      setLoading(false);
+    }
   }, [loading, email, password, dispatch]);
 
   const toSignUp = useCallback(() => {
-    navigation.navigate('SignUpSelect');
+    navigation.navigate('SignUpEmail', {sortation: 'student'});
   }, [navigation]);
 
   const isIos = Platform.OS === 'ios';

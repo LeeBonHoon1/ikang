@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, {useEffect, useState, useCallback} from 'react';
 import {
   View,
   Text,
@@ -7,13 +7,14 @@ import {
   ImageBackground,
   StatusBar,
   Platform,
+  Alert,
 } from 'react-native';
 import {useSelector} from 'react-redux';
 import {RootState} from '../store/reducer';
-import APIs from '../lib/APIs';
 import Icon from 'react-native-vector-icons/Ionicons';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import {RootStackParamList} from '../../AppInner';
+import axios from 'axios';
 
 interface NOTICE_TYPE {
   CONTENT: string;
@@ -24,55 +25,39 @@ interface NOTICE_TYPE {
 type SignInScreenProps = NativeStackScreenProps<RootStackParamList, 'Notice'>;
 
 // const DESC_MAX_LENGTH = 100;
+const host =
+  'http://ec2-18-182-33-159.ap-northeast-1.compute.amazonaws.com:3000/notice/getNoticeList';
 
 const Notice = ({navigation}: SignInScreenProps) => {
   const [notice, setNotice] = useState([]);
   const [ios, setIos] = useState(false);
-  const isTeacher = useSelector(
-    (state: RootState) => state.user.sortation === 1,
-  );
+  const [loading, setLoading] = useState(false);
+
+  const userInfo = useSelector((state: RootState) => state.user);
 
   useEffect(() => {
-    // APIs.getNoticeList().then(res => {
-    //   setNotice(res);
-    // });
+    getNoticeList();
+  }, []);
+
+  const getNoticeList = useCallback(async () => {
     if (Platform.OS === 'ios') {
       setIos(true);
     }
-  }, [notice]);
+    const response = await axios.get(host, {
+      headers: {
+        authorization: `Bearer ${userInfo.token}`,
+      },
+    });
+    if (response) {
+      setNotice(response.data);
+    } else {
+      Alert.alert('잠시 후 다시 시도해주세요');
+    }
+  }, [userInfo.token]);
+
   const goBack = () => {
     navigation.navigate('Main');
   };
-  const goAddNotice = () => {
-    navigation.navigate('AddNotice');
-  };
-
-  const DATA = [
-    {
-      NOTICE_IDX: 1,
-      TITLE: '수학반 개편1',
-      CONTENT:
-        '다들 지각하지 말고 똑바로 다니세요, 수업시간에 자지 마세요, 쉬는시간에 담배피러 가지 마세요, 옆사람과 떠들지 마세요, 컨닝 하지 마세요, 학원 내 연애 하지 마세요, 쳐먹던 거 교실 내 반입 하지 마세요, 담배피는 사람 보이면 신고하세요,다들 지각하지 말고 똑바로 다니세요, 수업시간에 자지 마세요, 쉬는시간에 담배피러 가지 마세요, 옆사람과 떠들지 마세요, 컨닝 하지 마세요, 학원 내 연애 하지 마세요, ',
-    },
-    {
-      NOTICE_IDX: 2,
-      TITLE: '수학반 개편2',
-      CONTENT:
-        '쳐먹던 거 교실 내 반입 하지 마세요, 담배피는 사람 보이면 신고하세요, 다들 지각하지 말고 똑바로 다니세요, 수업시간에 자지 마세요, 쉬는시간에 담배피러 가지 마세요, 옆사람과 떠들지 마세요, 컨닝 하지 마세요, 학원 내 연애 하지 마세요, 쳐먹던 거 교실 내 반입 하지 마세요, 담배피는 사람 보이면 신고하세요,다들 지각하지 말고 똑바로 다니세요, 수업시간에 자지 마세요, 쉬는시간에 담배피러 가지 마세요, 옆사람과 떠들지 마세요, 컨닝 하지 마세요, 학원 내 연애 하지 마세요, 쳐먹던 거 교실 내 반입 하지 마세요, 담배피는 사람 보이면 신고하세요,',
-    },
-    {
-      NOTICE_IDX: 3,
-      TITLE: '수학반 개편3',
-      CONTENT:
-        '다들 지각하지 말고 똑바로 다니세요, 수업시간에 자지 마세요, 쉬는시간에 담배피러 가지 마세요, 옆사람과 떠들지 마세요, 컨닝 하지 마세요, 학원 내 연애 하지 마세요, 쳐먹던 거 교실 내 반입 하지 마세요, 담배피는 사람 보이면 신고하세요,다들 지각하지 말고 똑바로 다니세요, 수업시간에 자지 마세요, 쉬는시간에 담배피러 가지 마세요, 옆사람과 떠들지 마세요, 컨닝 하지 마세요, 학원 내 연애 하지 마세요, 쳐먹던 거 교실 내 반입 하지 마세요, 담배피는 사람 보이면 신고하세요,',
-    },
-    {NOTICE_IDX: 4, TITLE: 'TITLE', CONTENT: '디스 앱솔 풀힐 아스파 서먼'},
-    {NOTICE_IDX: 5, TITLE: 'TITLE', CONTENT: '키드밀리 릴러말즈 전상근 아이유'},
-    {NOTICE_IDX: 6, TITLE: 'TITLE', CONTENT: '디스 앱솔 풀힐 아스파 서먼'},
-    {NOTICE_IDX: 7, TITLE: 'TITLE', CONTENT: '키드밀리 릴러말즈 전상근 아이유'},
-    {NOTICE_IDX: 8, TITLE: 'TITLE', CONTENT: '디스 앱솔 풀힐 아스파 서먼'},
-    {NOTICE_IDX: 9, TITLE: 'TITLE', CONTENT: '키드밀리 릴러말즈 전상근 아이유'},
-  ];
 
   return (
     <View style={ios ? styles.iosContainer : styles.container}>
@@ -90,28 +75,18 @@ const Notice = ({navigation}: SignInScreenProps) => {
               onPress={goBack}
             />
           </View>
-          {isTeacher ? (
-            <View style={styles.addNotice}>
-              <Icon
-                name="add-circle-outline"
-                size={40}
-                color="#3f3d56"
-                onPress={goAddNotice}
-              />
-            </View>
-          ) : null}
         </ImageBackground>
         <View style={styles.notice}>
-          {DATA?.length
-            ? DATA.map((item: NOTICE_TYPE, idx) => {
+          {notice?.length
+            ? notice.map((item: any, idx) => {
                 return (
-                  <View style={styles.contents} key={item.NOTICE_IDX}>
+                  <View style={styles.contents}>
                     <Text
                       style={styles.noticeTitle}
                       onPress={() => {
                         navigation.navigate('NoticeDetail', {
                           idx: idx,
-                          data: DATA,
+                          data: notice,
                         });
                       }}>
                       {item.TITLE}

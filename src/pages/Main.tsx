@@ -3,9 +3,8 @@ import {View, Text, StyleSheet, Alert, Platform} from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import {RootStackParamList} from '../../AppInner';
-import {useSelector} from 'react-redux';
-import {RootState} from '../store/reducer';
 import {useAppDispatch} from '../store';
+import EncryptedStorage from 'react-native-encrypted-storage';
 import userSlice from '../slices/user';
 
 type MainInScreenProps = NativeStackScreenProps<RootStackParamList, 'Main'>;
@@ -13,26 +12,22 @@ type MainInScreenProps = NativeStackScreenProps<RootStackParamList, 'Main'>;
 const Main = ({navigation}: MainInScreenProps) => {
   const isIos = Platform.OS === 'ios';
   const dispatch = useAppDispatch();
-  const isTeacher = useSelector((state: RootState) =>
-    state.user.sortation === 1 ? true : false,
-  );
 
   const goNotice = () => {
     navigation.navigate('Notice');
   };
-  const goSearch = () => {
-    navigation.navigate('Search');
-  };
-
   const logout = () => {
+    EncryptedStorage.removeItem('accessToken');
     dispatch(
       userSlice.actions.setUser({
-        email: '',
         name: '',
+        email: '',
         number: '',
         password: '',
-        sortation: '',
-        userIdx: '',
+        sortation: 0,
+        userIdx: 0,
+        token: '',
+        isLoggedIn: false,
       }),
     );
   };
@@ -71,39 +66,7 @@ const Main = ({navigation}: MainInScreenProps) => {
           </Text>
           <Text>공지사항</Text>
         </View>
-        <View style={styles.icon}>
-          <Text>
-            <Icon
-              name="person-outline"
-              size={70}
-              color="#f4a555"
-              onPress={goSearch}
-            />
-            ;
-          </Text>
-          <Text>회원검색</Text>
-        </View>
       </View>
-      {isTeacher ? (
-        <View style={styles.contents}>
-          <View style={styles.icon}>
-            <Text>
-              <Icon
-                name="chatbubble-ellipses-outline"
-                size={70}
-                color="#f4a555"
-              />
-            </Text>
-            <Text>알림톡</Text>
-          </View>
-          <View style={styles.icon}>
-            <Text>
-              <Icon name="person-add-outline" size={70} color="#f4a555" />;
-            </Text>
-            <Text>회원승인</Text>
-          </View>
-        </View>
-      ) : null}
     </View>
   );
 };

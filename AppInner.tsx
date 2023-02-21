@@ -4,16 +4,18 @@ import Notice from './src/pages/Notice';
 import Search from './src/pages/Search';
 import Main from './src/pages/Main';
 import SignupEmail from './src/pages/SignUpEmail';
-import SignUpSelect from './src/pages/SignUpSelect';
 import SignUpPassword from './src/pages/SignUpPassword';
 import SignUpPhone from './src/pages/SignUpPhone';
 import SignUpName from './src/pages/SignUpName';
 import AddNotice from './src/pages/AddNotice';
 import NoticeDetail from './src/pages/NoticeDetail';
-import * as React from 'react';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import {useSelector} from 'react-redux';
 import {RootState} from './src/store/reducer';
+import messaging from '@react-native-firebase/messaging';
+import React, {useEffect, useCallback} from 'react';
+import {useAppDispatch} from './src/store';
+import firebaseSlice from './src/slices/firebase';
 
 export type RootStackParamList<T = Array<string | number>> = {
   SignIn: undefined;
@@ -41,7 +43,7 @@ export type RootStackParamList<T = Array<string | number>> = {
   Main: undefined;
   Notice: undefined;
   Search: undefined;
-  SignUpSelect: undefined;
+
   AddNotice: undefined;
   NoticeDetail: {
     idx: number;
@@ -53,7 +55,27 @@ export type RootStackParamList<T = Array<string | number>> = {
 const Stack = createNativeStackNavigator<RootStackParamList>();
 
 function AppInner() {
-  const isLoggedIn = useSelector((state: RootState) => !!state.user.email);
+  const dispatch = useAppDispatch();
+
+  const getFcmToken = useCallback(async () => {
+    const fcmToken = await messaging().getToken();
+    dispatch(
+      firebaseSlice.actions.setFirebaseToken({
+        token: fcmToken,
+      }),
+    );
+  }, [dispatch]);
+
+  useEffect(() => {
+    getFcmToken();
+    const unsubscribe = messaging().onMessage(async remoteMessage => {
+      console.log('[Remote Message] ', JSON.stringify(remoteMessage));
+    });
+    return unsubscribe;
+  }, [getFcmToken]);
+
+  const isLoggedIn = useSelector((state: RootState) => state.user.isLoggedIn);
+
   return isLoggedIn ? (
     <Stack.Navigator>
       <Stack.Screen
@@ -92,11 +114,6 @@ function AppInner() {
       <Stack.Screen
         name="SignUp"
         component={SignUp}
-        options={{headerShown: false}}
-      />
-      <Stack.Screen
-        name="SignUpSelect"
-        component={SignUpSelect}
         options={{headerShown: false}}
       />
       <Stack.Screen

@@ -1,4 +1,8 @@
+import EncryptedStorage from 'react-native-encrypted-storage';
 import axios from 'axios';
+
+let token = EncryptedStorage.getItem('accessToken');
+axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
 
 export const get = async ({
   url,

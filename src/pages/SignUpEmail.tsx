@@ -38,27 +38,31 @@ const SIgnupEmail = ({navigation, route}: MainInScreenProps) => {
 
     setLoading(true);
 
-    const param = {
+    navigation.navigate('SignUpPassword', {
+      sortation: 2,
       email: email,
-    };
+    });
+    // const param = {
+    //   email: email,
+    // };
 
-    APIs.checkEmail(param)
-      .then(res => {
-        if (!res) {
-          navigation.navigate('SignUpPassword', {
-            sortation: route.params.sortation === 'teacher' ? 1 : 2,
-            email: email,
-          });
-        } else {
-          Alert.alert('알림', '이미 가입한 이메일입니다.');
-        }
-        setLoading(false);
-      })
-      .catch(err => {
-        console.log(err);
-        Alert.alert('알림', '잠시후에 다시 시도해주세요');
-        setLoading(false);
-      });
+    // APIs.checkEmail(param)
+    //   .then(res => {
+    //     if (!res) {
+    //       navigation.navigate('SignUpPassword', {
+    //         sortation: 2,
+    //         email: email,
+    //       });
+    //     } else {
+    //       Alert.alert('알림', '이미 가입한 이메일입니다.');
+    //     }
+    //     setLoading(false);
+    //   })
+    //   .catch(err => {
+    //     console.log(err);
+    //     Alert.alert('알림', '잠시후에 다시 시도해주세요');
+    //     setLoading(false);
+    //   });
   };
 
   const canGoNext =

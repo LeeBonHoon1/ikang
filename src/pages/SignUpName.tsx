@@ -12,6 +12,8 @@ import {
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 // import Icon from 'react-native-vector-icons/Ionicons';
 import {RootStackParamList} from '../../AppInner';
+import {useSelector} from 'react-redux';
+import {RootState} from '../store/reducer';
 import APIs from '../lib/APIs';
 
 type MainInScreenProps = NativeStackScreenProps<
@@ -22,7 +24,7 @@ type MainInScreenProps = NativeStackScreenProps<
 const SignUpName = ({navigation, route}: MainInScreenProps) => {
   const [name, setName] = useState('');
   const [loading, setLoading] = useState(false);
-
+  const firebaseToken = useSelector((state: RootState) => state.firebase.token);
   const setChangeName = useCallback((text: string) => {
     setName(text.trim());
   }, []);
@@ -35,12 +37,15 @@ const SignUpName = ({navigation, route}: MainInScreenProps) => {
       number: route.params.number,
       password: route.params.password,
       name: name,
+      firebaseToken: firebaseToken,
     };
+
+    console.log(param);
     APIs.signupRequest(param)
       .then(res => {
         if (res.status === 200) {
           setLoading(false);
-          Alert.alert('알림', '회원가입 되었습니다.');
+          Alert.alert('알림', '관리자 승인 후 로그인해주세요.');
           navigation.navigate('SignIn');
         }
       })

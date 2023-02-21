@@ -7,6 +7,8 @@ const initialState = {
   password: '',
   sortation: 0,
   userIdx: 0,
+  token: '',
+  isLoggedIn: false,
 };
 const userSlice = createSlice({
   name: 'user',
@@ -19,6 +21,8 @@ const userSlice = createSlice({
       state.password = action.payload.password;
       state.sortation = action.payload.sortation;
       state.userIdx = action.payload.userIdx;
+      state.token = action.payload.token;
+      state.isLoggedIn = action.payload.isLoggedIn;
     },
   },
   extraReducers: {},
