@@ -24,7 +24,7 @@ type MainInScreenProps = NativeStackScreenProps<
 const SignUpName = ({navigation, route}: MainInScreenProps) => {
   const [name, setName] = useState('');
   const [loading, setLoading] = useState(false);
-  const firebaseToken = useSelector((state: RootState) => state.firebase.token);
+  const pushToken = useSelector((state: RootState) => state.firebase.token);
   const setChangeName = useCallback((text: string) => {
     setName(text.trim());
   }, []);
@@ -37,7 +37,7 @@ const SignUpName = ({navigation, route}: MainInScreenProps) => {
       number: route.params.number,
       password: route.params.password,
       name: name,
-      firebaseToken: firebaseToken,
+      pushToken: pushToken,
     };
 
     console.log(param);
