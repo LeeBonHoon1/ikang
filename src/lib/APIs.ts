@@ -1,6 +1,6 @@
 import {get, post} from './index';
 
-const host =
+export const host =
   'http://ec2-18-182-33-159.ap-northeast-1.compute.amazonaws.com:3000';
 
 const getNoticeList = () => {
@@ -28,12 +28,19 @@ const getSearchUser = (body: object) => {
   return post({url, body});
 };
 
+const getNoticeDetail = (body: object) => {
+  const url = `${host}/notice/detailNotice`;
+  return post({url, body});
+};
+
 const APIs = {
   getNoticeList,
   signupRequest,
   signIn,
   checkEmail,
   getSearchUser,
+  host,
+  getNoticeDetail,
 };
 
 export default APIs;

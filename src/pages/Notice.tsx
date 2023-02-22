@@ -8,6 +8,7 @@ import {
   StatusBar,
   Platform,
   Alert,
+  ActivityIndicator,
 } from 'react-native';
 import {useSelector} from 'react-redux';
 import {RootState} from '../store/reducer';
@@ -15,18 +16,19 @@ import Icon from 'react-native-vector-icons/Ionicons';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import {RootStackParamList} from '../../AppInner';
 import axios from 'axios';
+import {host} from '../lib/APIs';
+import moment from 'moment';
 
 interface NOTICE_TYPE {
   CONTENT: string;
+  GROUP_NAME: string;
+  NAME: string;
   NOTICE_IDX: number;
+  REG_DATE: string;
   TITLE: string;
 }
 
 type SignInScreenProps = NativeStackScreenProps<RootStackParamList, 'Notice'>;
-
-// const DESC_MAX_LENGTH = 100;
-const host =
-  'http://ec2-18-182-33-159.ap-northeast-1.compute.amazonaws.com:3000/notice/getNoticeList';
 
 const Notice = ({navigation}: SignInScreenProps) => {
   const [notice, setNotice] = useState([]);
@@ -35,69 +37,96 @@ const Notice = ({navigation}: SignInScreenProps) => {
 
   const userInfo = useSelector((state: RootState) => state.user);
 
-  useEffect(() => {
-    getNoticeList();
-  }, []);
-
   const getNoticeList = useCallback(async () => {
     if (Platform.OS === 'ios') {
       setIos(true);
     }
-    const response = await axios.get(host, {
+
+    const response = await axios.get(`${host}/notice/getNoticeList`, {
       headers: {
         authorization: `Bearer ${userInfo.token}`,
       },
     });
     if (response) {
       setNotice(response.data);
+      setLoading(true);
     } else {
       Alert.alert('잠시 후 다시 시도해주세요');
     }
   }, [userInfo.token]);
+
+  useEffect(() => {
+    getNoticeList();
+  }, [getNoticeList]);
 
   const goBack = () => {
     navigation.navigate('Main');
   };
 
   return (
-    <View style={ios ? styles.iosContainer : styles.container}>
-      <StatusBar hidden={false} />
-      <ScrollView>
-        <ImageBackground
-          source={require('../img/notice.png')}
-          style={styles.logo}
-          resizeMode="contain">
-          <View style={styles.arrow}>
-            <Icon
-              name="chevron-back-outline"
-              size={40}
-              color="#3f3d56"
-              onPress={goBack}
-            />
-          </View>
-        </ImageBackground>
-        <View style={styles.notice}>
-          {notice?.length
-            ? notice.map((item: any, idx) => {
-                return (
-                  <View style={styles.contents}>
-                    <Text
-                      style={styles.noticeTitle}
-                      onPress={() => {
-                        navigation.navigate('NoticeDetail', {
-                          idx: idx,
-                          data: notice,
-                        });
-                      }}>
-                      {item.TITLE}
-                    </Text>
-                  </View>
-                );
-              })
-            : null}
+    <>
+      {loading ? (
+        <View style={ios ? styles.iosContainer : styles.container}>
+          <StatusBar hidden={false} />
+          <ScrollView>
+            <ImageBackground
+              source={require('../img/notice.png')}
+              style={styles.logo}
+              resizeMode="contain">
+              <View style={styles.arrow}>
+                <Icon
+                  name="chevron-back-outline"
+                  size={40}
+                  color="#3f3d56"
+                  onPress={goBack}
+                />
+              </View>
+            </ImageBackground>
+            <View style={styles.notice}>
+              {notice?.length
+                ? notice.map((item: NOTICE_TYPE, idx: number) => {
+                    return (
+                      <View style={styles.contents} key={idx}>
+                        <View>
+                          <Text
+                            style={styles.noticeTitle}
+                            // onPress={e => {
+                            //   console.log(e.target);
+                            // }}
+                            // onPress={() => {
+                            //   navigation.navigate('NoticeDetail', {
+                            //     data: notice,
+                            //   });
+                            // }}
+                          >
+                            {item.TITLE}
+                            {item.NAME}
+                          </Text>
+                        </View>
+                        <View>
+                          <Text>
+                            {moment(item.REG_DATE).format('YYYY-MM-DD')}
+                          </Text>
+                          <Text>{item.CONTENT}</Text>
+                        </View>
+                      </View>
+                    );
+                  })
+                : null}
+            </View>
+          </ScrollView>
         </View>
-      </ScrollView>
-    </View>
+      ) : (
+        <View
+          style={{
+            flex: 1,
+            justifyContent: 'center',
+            alignItems: 'center',
+          }}>
+          <ActivityIndicator />
+        </View>
+      )}
+    </>
   );
 };
 

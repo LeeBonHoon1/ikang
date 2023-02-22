@@ -18,15 +18,18 @@ type SignInScreenProps = NativeStackScreenProps<
 
 const NoticeDetail = ({navigation, route}: SignInScreenProps) => {
   const [ios, setIos] = useState(false);
-  const {params: {idx = 0, data = null} = {}} = route;
-  console.log(idx);
-  const result = data?.filter(item => {
-    return item.NOTICE_IDX === idx + 1;
-  });
+  const {params: {data = null} = {}} = route;
 
   const goBack = () => {
     navigation.navigate('Notice');
   };
+
+  // const getDetailData = useCallback(async() => {
+  //   const params = {
+  //     num : data
+  //   }
+  //   await APIs.getNoticeDetail()
+  // }, [])
 
   useEffect(() => {
     if (Platform.OS === 'ios') {
@@ -49,16 +52,15 @@ const NoticeDetail = ({navigation, route}: SignInScreenProps) => {
           />
         </View>
       </ImageBackground>
-      {result
-        ? result.map((item, idx) => {
-            return (
-              <View key={idx} style={styles.detail}>
-                <Text style={styles.title}>{item.TITLE}</Text>
-                <Text style={styles.content}>{item.CONTENT}</Text>
-              </View>
-            );
-          })
-        : null}
+      {data &&
+        data.map((item, idx) => {
+          return (
+            <View key={idx} style={styles.detail}>
+              <Text style={styles.title}>{item.TITLE}</Text>
+              <Text style={styles.content}>{item.CONTENT}</Text>
+            </View>
+          );
+        })}
     </ScrollView>
   );
 };

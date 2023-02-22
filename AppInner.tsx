@@ -46,7 +46,6 @@ export type RootStackParamList<T = Array<string | number>> = {
 
   AddNotice: undefined;
   NoticeDetail: {
-    idx: number;
     data: T[];
   };
 };
