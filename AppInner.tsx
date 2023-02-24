@@ -16,7 +16,7 @@ import messaging from '@react-native-firebase/messaging';
 import React, {useEffect, useCallback} from 'react';
 import {useAppDispatch} from './src/store';
 import firebaseSlice from './src/slices/firebase';
-
+import {Alert} from 'react-native';
 export type RootStackParamList<T = Array<string | number>> = {
   SignIn: undefined;
   SignUp: Partial<{
@@ -69,6 +69,7 @@ function AppInner() {
     getFcmToken();
     const unsubscribe = messaging().onMessage(async remoteMessage => {
       console.log('[Remote Message] ', JSON.stringify(remoteMessage));
+      Alert.alert(remoteMessage?.notification?.body || 'aaaaaaaaaaaaa');
     });
     return unsubscribe;
   }, [getFcmToken]);
