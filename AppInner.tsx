@@ -17,6 +17,8 @@ import React, {useEffect, useCallback} from 'react';
 import {useAppDispatch} from './src/store';
 import firebaseSlice from './src/slices/firebase';
 import {Alert} from 'react-native';
+import EncryptedStorage from 'react-native-encrypted-storage';
+
 export type RootStackParamList<T = Array<string | number>> = {
   SignIn: undefined;
   SignUp: Partial<{
@@ -65,13 +67,27 @@ function AppInner() {
     );
   }, [dispatch]);
 
-  useEffect(() => {
-    getFcmToken();
+  const getMessage = async () => {
     const unsubscribe = messaging().onMessage(async remoteMessage => {
-      console.log('[Remote Message] ', JSON.stringify(remoteMessage));
-      Alert.alert(remoteMessage?.notification?.body || 'aaaaaaaaaaaaa');
+      const jsonMessage = JSON.stringify(remoteMessage);
+      await EncryptedStorage.setItem('message', jsonMessage);
+      // console.log('[Remote Message] ', JSON.stringify(remoteMessage));
+      // Alert.alert(
+      //   remoteMessage?.notification?.title || '',
+      //   remoteMessage?.notification?.body || '',
+      // );
     });
     return unsubscribe;
+  };
+  interface MessageType {
+    storageMessage: object;
+  }
+  useEffect(() => {
+    getFcmToken();
+    const storageMessage = EncryptedStorage.getItem('key');
+    console.log('---------');
+    console.log(storageMessage);
+    console.log('---------');
   }, [getFcmToken]);
 
   const isLoggedIn = useSelector((state: RootState) => state.user.isLoggedIn);

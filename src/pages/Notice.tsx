@@ -87,26 +87,21 @@ const Notice = ({navigation}: SignInScreenProps) => {
                 ? notice.map((item: NOTICE_TYPE, idx: number) => {
                     return (
                       <View style={styles.contents} key={idx}>
-                        <View>
-                          <Text
-                            style={styles.noticeTitle}
-                            // onPress={e => {
-                            //   console.log(e.target);
-                            // }}
-                            // onPress={() => {
-                            //   navigation.navigate('NoticeDetail', {
-                            //     data: notice,
-                            //   });
-                            // }}
-                          >
-                            {item.TITLE}
-                            {item.NAME}
-                          </Text>
+                        <View
+                          style={{
+                            display: 'flex',
+                            flexDirection: 'row',
+                            justifyContent: 'space-between',
+                          }}>
+                          <View style={styles.titleWrapper}>
+                            <Text style={styles.noticeTitle}>{item.TITLE}</Text>
+                            <Text style={styles.noticeDate}>
+                              {moment(item.REG_DATE).format('YYYY-MM-DD')}
+                            </Text>
+                          </View>
+                          <Text style={styles.noticeWriter}>{item.NAME}</Text>
                         </View>
-                        <View>
-                          <Text>
-                            {moment(item.REG_DATE).format('YYYY-MM-DD')}
-                          </Text>
+                        <View style={styles.desc}>
                           <Text>{item.CONTENT}</Text>
                         </View>
                       </View>
@@ -171,7 +166,7 @@ const styles = StyleSheet.create({
   },
   contents: {
     width: '90%',
-    height: 60,
+
     marginTop: 10,
     marginBottom: 10,
     // borderRadius: 15,
@@ -184,16 +179,39 @@ const styles = StyleSheet.create({
     shadowRadius: 3.84,
     elevation: 3,
   },
+  noticeDate: {
+    fontSize: 12,
+    marginTop: 15,
+    marginLeft: 20,
+    fontWeight: 'bold',
+    color: '#3f3d56',
+  },
+  titleWrapper: {
+    display: 'flex',
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
   noticeImage: {
     backgroundColor: '#f9a826',
     height: 100,
     borderTopLeftRadius: 15,
     borderTopRightRadius: 15,
   },
+  desc: {
+    padding: 10,
+    marginTop: 10,
+  },
   noticeTitle: {
     fontSize: 20,
     marginTop: 15,
     marginLeft: 20,
+    fontWeight: 'bold',
+    color: '#3f3d56',
+  },
+  noticeWriter: {
+    fontSize: 20,
+    marginTop: 15,
+    marginRight: 20,
     fontWeight: 'bold',
     color: '#3f3d56',
   },

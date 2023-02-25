@@ -49,6 +49,7 @@ const SignUpPhone = ({navigation, route}: MainInScreenProps) => {
         placeholder="휴대전화번호"
         onChangeText={onChangeNumber}
         value={phone}
+        keyboardType="number-pad"
       />
       <Pressable
         style={
