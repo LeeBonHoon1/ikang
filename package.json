@@ -10,8 +10,6 @@
     "lint": "eslint ."
   },
   "dependencies": {
-    "@react-native-firebase/app": "^17.3.0",
-    "@react-native-firebase/messaging": "^17.3.0",
     "@react-navigation/bottom-tabs": "^6.4.3",
     "@react-navigation/native": "^6.0.16",
     "@react-navigation/native-stack": "^6.9.4",

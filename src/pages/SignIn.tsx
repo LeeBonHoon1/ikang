@@ -67,6 +67,7 @@ function SignIn({navigation}: MainInScreenProps) {
           password: res.userInfo.PASSWORD,
           userIdx: res.userInfo.USER_IDX,
           sortation: res.userInfo.SORTATION,
+          groupIdx: res.userInfo.GROUP_IDX,
           token: res.token,
           isLoggedIn: true,
         }),

@@ -1,7 +1,7 @@
 import {get, post} from './index';
 
 export const host =
-  'http://ec2-18-182-33-159.ap-northeast-1.compute.amazonaws.com:3000';
+  'http://ec2-35-78-85-163.ap-northeast-1.compute.amazonaws.com:3000';
 
 const getNoticeList = () => {
   const url = `${host}/notice/getNoticeList`;

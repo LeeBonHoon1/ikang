@@ -36,24 +36,28 @@ const Notice = ({navigation}: SignInScreenProps) => {
   const [loading, setLoading] = useState(false);
 
   const userInfo = useSelector((state: RootState) => state.user);
+  const {groupIdx} = userInfo;
 
   const getNoticeList = useCallback(async () => {
     if (Platform.OS === 'ios') {
       setIos(true);
     }
 
-    const response = await axios.get(`${host}/notice/getNoticeList`, {
+    const res = await axios.get(`${host}/notice/getNoticeList`, {
       headers: {
         authorization: `Bearer ${userInfo.token}`,
       },
     });
-    if (response) {
-      setNotice(response.data);
+    if (res) {
+      const result = res.data.filter(item => {
+        return String(groupIdx) === item.TARGET || '0' === item.TARGET;
+      });
+      setNotice(result);
       setLoading(true);
     } else {
       Alert.alert('잠시 후 다시 시도해주세요');
     }
-  }, [userInfo.token]);
+  }, [groupIdx, userInfo.token]);
 
   useEffect(() => {
     getNoticeList();

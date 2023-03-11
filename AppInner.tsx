@@ -12,12 +12,12 @@ import NoticeDetail from './src/pages/NoticeDetail';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import {useSelector} from 'react-redux';
 import {RootState} from './src/store/reducer';
-import messaging from '@react-native-firebase/messaging';
-import React, {useEffect, useCallback} from 'react';
-import {useAppDispatch} from './src/store';
-import firebaseSlice from './src/slices/firebase';
-import {Alert} from 'react-native';
-import EncryptedStorage from 'react-native-encrypted-storage';
+
+import React from 'react';
+// import {useAppDispatch} from './src/store';
+// import firebaseSlice from './src/slices/firebase';
+// import {Alert} from 'react-native';
+// import EncryptedStorage from 'react-native-encrypted-storage';
 
 export type RootStackParamList<T = Array<string | number>> = {
   SignIn: undefined;
@@ -56,39 +56,39 @@ export type RootStackParamList<T = Array<string | number>> = {
 const Stack = createNativeStackNavigator<RootStackParamList>();
 
 function AppInner() {
-  const dispatch = useAppDispatch();
+  // const dispatch = useAppDispatch();
 
-  const getFcmToken = useCallback(async () => {
-    const fcmToken = await messaging().getToken();
-    dispatch(
-      firebaseSlice.actions.setFirebaseToken({
-        token: fcmToken,
-      }),
-    );
-  }, [dispatch]);
+  // const getFcmToken = useCallback(async () => {
+  //   const fcmToken = await messaging().getToken();
+  //   dispatch(
+  //     firebaseSlice.actions.setFirebaseToken({
+  //       token: fcmToken,
+  //     }),
+  //   );
+  // }, [dispatch]);
 
-  const getMessage = async () => {
-    const unsubscribe = messaging().onMessage(async remoteMessage => {
-      const jsonMessage = JSON.stringify(remoteMessage);
-      await EncryptedStorage.setItem('message', jsonMessage);
-      // console.log('[Remote Message] ', JSON.stringify(remoteMessage));
-      // Alert.alert(
-      //   remoteMessage?.notification?.title || '',
-      //   remoteMessage?.notification?.body || '',
-      // );
-    });
-    return unsubscribe;
-  };
-  interface MessageType {
-    storageMessage: object;
-  }
-  useEffect(() => {
-    getFcmToken();
-    const storageMessage = EncryptedStorage.getItem('key');
-    console.log('---------');
-    console.log(storageMessage);
-    console.log('---------');
-  }, [getFcmToken]);
+  // const getMessage = async () => {
+  //   const unsubscribe = messaging().onMessage(async remoteMessage => {
+  //     const jsonMessage = JSON.stringify(remoteMessage);
+  //     await EncryptedStorage.setItem('message', jsonMessage);
+  //     // console.log('[Remote Message] ', JSON.stringify(remoteMessage));
+  //     // Alert.alert(
+  //     //   remoteMessage?.notification?.title || '',
+  //     //   remoteMessage?.notification?.body || '',
+  //     // );
+  //   });
+  //   return unsubscribe;
+  // };
+  // interface MessageType {
+  //   storageMessage: object;
+  // }
+  // useEffect(() => {
+  //   getFcmToken();
+  //   const storageMessage = EncryptedStorage.getItem('key');
+  //   console.log('---------');
+  //   console.log(storageMessage);
+  //   console.log('---------');
+  // }, [getFcmToken]);
 
   const isLoggedIn = useSelector((state: RootState) => state.user.isLoggedIn);
 
