@@ -11,6 +11,7 @@
 		13B07FBC1A68108700A75B9A /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB01A68108700A75B9A /* AppDelegate.m */; };
 		13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB51A68108700A75B9A /* Images.xcassets */; };
 		13B07FC11A68108700A75B9A /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB71A68108700A75B9A /* main.m */; };
+		3B3B266B29BDEB810036F9A9 /* AppCenter-Config.plist in Resources */ = {isa = PBXBuildFile; fileRef = 3B3B266A29BDEB810036F9A9 /* AppCenter-Config.plist */; };
 		61EC2DCFFAC1200A72E7A763 /* libPods-EG-EGTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4AFACEC589608CFADEE98AFA /* libPods-EG-EGTests.a */; };
 		81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */; };
 		FE30943B9BB58D8CA14E0830 /* libPods-EG.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 7AFAF9CFE51C748EE340876E /* libPods-EG.a */; };
@@ -37,6 +38,7 @@
 		13B07FB61A68108700A75B9A /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Info.plist; path = EG/Info.plist; sourceTree = "<group>"; };
 		13B07FB71A68108700A75B9A /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = main.m; path = EG/main.m; sourceTree = "<group>"; };
 		3A2620802F88241CD8201B59 /* Pods-EG-EGTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-EG-EGTests.debug.xcconfig"; path = "Target Support Files/Pods-EG-EGTests/Pods-EG-EGTests.debug.xcconfig"; sourceTree = "<group>"; };
+		3B3B266A29BDEB810036F9A9 /* AppCenter-Config.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "AppCenter-Config.plist"; sourceTree = "<group>"; };
 		4AFACEC589608CFADEE98AFA /* libPods-EG-EGTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-EG-EGTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		5C3F6DDB2913946CC4D9937B /* Pods-EG.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-EG.release.xcconfig"; path = "Target Support Files/Pods-EG/Pods-EG.release.xcconfig"; sourceTree = "<group>"; };
 		7AFAF9CFE51C748EE340876E /* libPods-EG.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-EG.a"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -116,6 +118,7 @@
 		83CBB9F61A601CBA00E9B192 = {
 			isa = PBXGroup;
 			children = (
+				3B3B266A29BDEB810036F9A9 /* AppCenter-Config.plist */,
 				13B07FAE1A68108700A75B9A /* EG */,
 				832341AE1AAA6A7D00B99B32 /* Libraries */,
 				00E356EF1AD99517003FC87E /* EGTests */,
@@ -145,7 +148,6 @@
 				3A2620802F88241CD8201B59 /* Pods-EG-EGTests.debug.xcconfig */,
 				DD6D3A951E4A2A0D8E154826 /* Pods-EG-EGTests.release.xcconfig */,
 			);
-			name = Pods;
 			path = Pods;
 			sourceTree = "<group>";
 		};
@@ -245,6 +247,7 @@
 			files = (
 				81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */,
 				13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */,
+				3B3B266B29BDEB810036F9A9 /* AppCenter-Config.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
